@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>International Contributions — Evidence Grading & Four-Checks Visual</title>
+<style>
+  :root{
+    --bg:#f6f8fa; --panel:#ffffff; --ink:#1f2328; --muted:#57606a; --line:#d0d7de;
+    --v:#1a7f37; --s:#0969da; --m:#bf8700; --l:#bc4c00; --p:#cf222e;
+    --accent:#6e40c9; --shadow:0 1px 3px rgba(27,31,36,.08),0 8px 24px rgba(27,31,36,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0d1117; --panel:#161b22; --ink:#e6edf3; --muted:#9da7b3; --line:#30363d;
+      --v:#3fb950; --s:#58a6ff; --m:#e3b341; --l:#f0883e; --p:#ff7b72;
+      --accent:#bc8cff; --shadow:0 1px 3px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.4);
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,"PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 20px 80px}
+  header.top{background:linear-gradient(135deg,var(--accent),#2a6fdb);color:#fff;border-radius:16px;
+    padding:28px 28px;box-shadow:var(--shadow);margin-bottom:26px}
+  header.top h1{margin:0 0 6px;font-size:24px;letter-spacing:.2px}
+  header.top p{margin:4px 0;opacity:.95;font-size:14px}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
+    padding:2px 10px;border-radius:999px;font-size:12px;margin:6px 6px 0 0}
+  nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 28px}
+  nav.toc a{text-decoration:none;color:var(--ink);background:var(--panel);border:1px solid var(--line);
+    padding:7px 13px;border-radius:10px;font-size:13px;box-shadow:var(--shadow);transition:.15s}
+  nav.toc a:hover{border-color:var(--accent);transform:translateY(-1px)}
+  section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px 24px;
+    margin-bottom:22px;box-shadow:var(--shadow)}
+  h2{font-size:19px;margin:0 0 4px;display:flex;align-items:center;gap:10px}
+  h2 .n{background:var(--accent);color:#fff;width:26px;height:26px;border-radius:8px;display:inline-flex;
+    align-items:center;justify-content:center;font-size:14px;flex:0 0 auto}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 16px}
+  .grade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+  .grade{background:var(--bg);border:1px solid var(--line);border-left-width:6px;border-radius:10px;padding:14px}
+  .grade .g{font-size:22px;font-weight:800;letter-spacing:.5px}
+  .grade .t{font-weight:600;margin:2px 0 6px}
+  .grade .d{font-size:12.5px;color:var(--muted)}
+  .grade .c{font-size:12.5px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+  .check{border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
+  .check summary{cursor:pointer;padding:14px 16px;font-weight:600;list-style:none;display:flex;
+    align-items:center;gap:12px;background:var(--bg)}
+  .check summary::-webkit-details-marker{display:none}
+  .check summary .cid{background:var(--accent);color:#fff;border-radius:8px;padding:3px 9px;font-size:12px;flex:0 0 auto}
+  .check summary .q{font-size:13px;color:var(--muted);font-weight:400;margin-left:auto;text-align:right;flex:1}
+  .check .body{padding:14px 16px}
+  .ev{display:grid;grid-template-columns:54px 1fr;border-bottom:1px solid var(--line);padding:8px 0;gap:10px;align-items:start}
+  .ev:last-child{border-bottom:none}
+  .ev .badge{font-weight:800;text-align:center;border-radius:6px;padding:4px 0;color:#fff;font-size:13px}
+  .ev .txt{font-size:13px}
+  .pf{display:flex;gap:18px;margin-top:12px;flex-wrap:wrap;font-size:13px}
+  .pf .pass{color:var(--v);font-weight:600}
+  .pf .fail{color:var(--p);font-weight:600}
+  .seam{margin-top:8px;font-size:12.5px;color:var(--muted);background:var(--bg);border-radius:8px;padding:8px 10px}
+  .life{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+  .step{flex:1 1 100px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;
+    text-align:center;position:relative}
+  .step .num{font-size:12px;color:var(--muted)}
+  .step .nm{font-weight:600;font-size:13px;margin:4px 0}
+  .step .rc{font-size:11px;color:var(--v);font-weight:700;min-height:14px}
+  .step .arrow{position:absolute;right:-9px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:16px;z-index:2}
+  .table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+  .table th,.table td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  .table th{background:var(--bg);font-weight:600}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;word-break:break-all}
+  .verdict{display:inline-block;background:var(--v);color:#fff;padding:3px 12px;border-radius:999px;font-weight:700;font-size:13px}
+  .rt{display:grid;grid-template-columns:60px 1fr;gap:12px;align-items:start;padding:12px 0;border-bottom:1px solid var(--line)}
+  .rt:last-child{border-bottom:none}
+  .rt .tag{background:var(--p);color:#fff;border-radius:8px;text-align:center;font-weight:700;font-size:13px;padding:6px 0}
+  .rt .tag.ok{background:var(--v)}
+  .rt .meta{font-size:13px}
+  .rt .meta b{color:var(--v)}
+  .refs{columns:2;column-gap:24px;font-size:13px}
+  .refs a{color:var(--s);text-decoration:none;display:block;padding:4px 0;break-inside:avoid}
+  .refs a:hover{text-decoration:underline}
+  .note{background:var(--bg);border:1px dashed var(--line);border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--muted);margin-top:14px}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;margin:4px 0 14px}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .dot{width:12px;height:12px;border-radius:3px;display:inline-block}
+  footer{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>Evidence Grading &amp; Four-Checks — International Contributions Visual</h1>
+    <p>Two contributions: <b>A1</b> ITU FG-TIDA Input Document (ToR A.2.7) &nbsp;·&nbsp; <b>C</b> W3C s-agent-comm four-checks deliverable (12-15 commitment)</p>
+    <p>Contributor: <b>Xinghua Zhao</b> — individual, ORCID 0009-0001-0512-1237 &nbsp;·&nbsp; Licence: CC BY 4.0</p>
+    <div>
+      <span class="pill">S1 Expert ✓</span><span class="pill">S3 Primary sources ✓</span>
+      <span class="pill">S4 Red team ✓</span><span class="pill">S5 Outsider re-run ✓</span>
+      <span class="pill">S6 External AI (DeepSeek-V3) SAFE-AS-IS ✓</span>
+      <span class="pill">S7 Direct citations ✓</span><span class="pill">L0 machine gate PASS</span>
+    </div>
+  </header>
+
+  <nav class="toc">
+    <a href="#grades">① Evidence grades</a>
+    <a href="#checks">② Four checks</a>
+    <a href="#life">③ 9-step lifecycle</a>
+    <a href="#s5">④ S5.1 outsider test</a>
+    <a href="#rt">⑤ Red-team top 3</a>
+    <a href="#refs">⑥ References</a>
+  </nav>
+
+  <!-- ① -->
+  <section id="grades">
+    <h2><span class="n">1</span> Evidence-grading vocabulary (V / S / M / L / P)</h2>
+    <p class="sub">Carried through both contributions as the check <i>input</i> language — never as a verdict. Adapted from a GRADE-style four-level scheme (BMJ 2008), not affiliated with the GRADE Working Group.</p>
+    <div class="grade-grid">
+      <div class="grade" style="border-left-color:var(--v)"><div class="g" style="color:var(--v)">V</div><div class="t">Verified</div><div class="d">Cross-verified against independent sources</div><div class="c">Consequence: eligible for automated trust</div></div>
+      <div class="grade" style="border-left-color:var(--s)"><div class="g" style="color:var(--s)">S</div><div class="t">Single-source</div><div class="d">One source only, not yet cross-checked</div><div class="c">Consequence: eligible with human-in-loop</div></div>
+      <div class="grade" style="border-left-color:var(--m)"><div class="g" style="color:var(--m)">M</div><div class="t">Model-derived</div><div class="d">Inferred / model-produced, not externally attested</div><div class="c">Consequence: conditional, flagged</div></div>
+      <div class="grade" style="border-left-color:var(--l)"><div class="g" style="color:var(--l)">L</div><div class="t">Low / unverified</div><div class="d">Missing or contradictory evidence</div><div class="c">Consequence: quarantined</div></div>
+      <div class="grade" style="border-left-color:var(--p)"><div class="g" style="color:var(--p)">P</div><div class="t">Prohibited / poisoned</div><div class="d">Known-bad or tamper-indicated</div><div class="c">Consequence: blocked</div></div>
+    </div>
+    <p class="sub" style="margin-top:14px">Authorization states carried alongside the grade: <b>verified · unresolved · rejected · quarantined</b></p>
+  </section>
+
+  <!-- ② -->
+  <section id="checks">
+    <h2><span class="n">2</span> The four checks (W3C s-agent-comm deliverable)</h2>
+    <p class="sub">Each check answers one relying-party question: given an agent identifier, what must I be able to verify, and what evidence makes it pass or fail? Click a check to expand its evidence items.</p>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--v)"></i> V verified</span>
+      <span><i class="dot" style="background:var(--s)"></i> S single-source</span>
+      <span><i class="dot" style="background:var(--m)"></i> M model-derived</span>
+      <span><i class="dot" style="background:var(--l)"></i> L low/unverified</span>
+      <span><i class="dot" style="background:var(--p)"></i> P prohibited</span>
+    </div>
+
+    <details class="check" open>
+      <summary><span class="cid">Check 1</span> Delegation-chain verifiability <span class="q">Can a relying party verify the ordered delegation chain, root → agent?</span></summary>
+      <div class="body">
+        <div class="ev"><div class="badge" style="background:var(--v)">V</div><div class="txt">Every link resolves to a verifiable delegator→delegate binding with a signed scope statement (delegator, delegate, capability, not-before, not-after).</div></div>
+        <div class="ev"><div class="badge" style="background:var(--s)">S</div><div class="txt">The chain resolves but one or more links rely on a single (un-cross-checked) source.</div></div>
+        <div class="ev"><div class="badge" style="background:var(--m)">M</div><div class="txt">The chain is asserted by the agent itself with no independent delegator attestation.</div></div>
+        <div class="ev"><div class="badge" style="background:var(--l)">L</div><div class="txt">One or more links missing, expired, or unverifiable.</div></div>
+        <div class="ev"><div class="badge" style="background:var(--p)">P</div><div class="txt">A link is revoked yet still presented as active (tamper-indicated).</div></div>
+        <div class="pf"><span class="pass">PASS: every link V or S, none L or P</span><span class="fail">FAIL: any link L or P</span></div>
+        <div class="seam">Seam: reads the group's <b>delegation</b> vocabulary (AgentIDL constrainable delegation) and <b>identity</b> vocabulary (Agent Identity Registry). Verifies the chain only — does not decide whether the delegation should have been granted.</div>
+      </div>
+    </details>
+
+    <details class="check">
+      <summary><span class="cid">Check 2</span> Execution-record integrity <span class="q">Is the agent's semantic log present, tamper-evident, attributable?</span></summary>
+      <div class="body">
+        <div class="ev"><div class="badge" style="background:var(--v)">V</div><div class="txt">The log is hash-chained, each entry signed by the agent key, and entries are contiguous (no gaps).</div></div>
+        <div class="ev"><div class="badge" style="background:var(--s)">S</div><div class="txt">The log is complete but one segment is signed by an intermediate delegate rather than the agent key.</div></div>
+        <div class="ev"><div class="badge" style="background:var(--m)">M</div><div class="txt">The log is reconstructed by a model/inference from side channels, not from signed records.</div></div>
+        <div class="ev"><div class="badge" style="background:var(--l)">L</div><div class="txt">Log entries missing or unsigned.</div></div>
+        <div class="ev"><div class="badge" style="background:var(--p)">P</div><div class="txt">A hash-chain break or a forged signature detected.</div></div>
+        <div class="pf"><span class="pass">PASS: V or S across the audited window, none L or P</span><span class="fail">FAIL: any L or P</span></div>
+        <div class="seam">Seam: reads the group's <b>semantic logs</b> vocabulary. This is the execution-record half of the 30-Oct promise.</div>
+      </div>
+    </details>
+
+    <details class="check">
+      <summary><span class="cid">Check 3</span> Authorization binding <span class="q">Does the gate produce a reproducible admit/deny verdict from enumerable inputs?</span></summary>
+      <div class="body">
+        <div class="ev"><div class="badge" style="background:var(--v)">V</div><div class="txt">The gate's input fields (delegation state, evidence grade, requested action) are enumerated, and the verdict is a pure function of those inputs.</div></div>
+        <div class="ev"><div class="badge" style="background:var(--s)">S</div><div class="txt">Inputs enumerated, verdict reproducible, but one input (e.g. revocation state) read from a single source.</div></div>
+        <div class="ev"><div class="badge" style="background:var(--m)">M</div><div class="txt">Verdict produced by a model with no enumerable input contract.</div></div>
+        <div class="ev"><div class="badge" style="background:var(--l)">L</div><div class="txt">Verdict inputs not documented; the gate is opaque.</div></div>
+        <div class="ev"><div class="badge" style="background:var(--p)">P</div><div class="txt">The gate admits an action for which a P-graded input exists (contradiction).</div></div>
+        <div class="pf"><span class="pass">PASS: V or S</span><span class="fail">FAIL: L or P</span></div>
+        <div class="seam">Seam: reads the group's <b>capability description</b> and <b>conformance definitions</b> vocabulary. Marks the gate's input read-point, never the verdict itself.</div>
+      </div>
+    </details>
+
+    <details class="check">
+      <summary><span class="cid">Check 4</span> Accountability continuity (revocation / rollback) <span class="q">After revocation/rollback, does the record show coherent before/after with no orphans?</span></summary>
+      <div class="body">
+        <div class="ev"><div class="badge" style="background:var(--v)">V</div><div class="txt">Revocation/rollback state propagates to the execution record; the record shows the state transition with a timestamp and the revoking authority.</div></div>
+        <div class="ev"><div class="badge" style="background:var(--s)">S</div><div class="txt">Transition recorded but the revoking authority attested by a single source.</div></div>
+        <div class="ev"><div class="badge" style="background:var(--m)">M</div><div class="txt">Transition inferred, not recorded in the signed log.</div></div>
+        <div class="ev"><div class="badge" style="background:var(--l)">L</div><div class="txt">No record of the transition; orphaned authorizations may persist.</div></div>
+        <div class="ev"><div class="badge" style="background:var(--p)">P</div><div class="txt">An authorization remains effective after an explicit revocation (orphan detected).</div></div>
+        <div class="pf"><span class="pass">PASS: V or S, none L or P</span><span class="fail">FAIL: any L or P</span></div>
+        <div class="seam">Seam: reads the group's <b>intent modelling</b> and <b>conformance definitions</b> vocabulary; closes the loop between Check 1 (delegation) and Check 2 (execution record).</div>
+      </div>
+    </details>
+
+    <div class="note">Honest scope note: Checks 3–4 read the capability-description / intent-modelling / conformance-definitions vocabulary that the 30-Oct message itself enumerated as in-scope (the group's nine scope areas). They do not reach outside that vocabulary and do not propose new normative text.</div>
+  </section>
+
+  <!-- ③ -->
+  <section id="life">
+    <h2><span class="n">3</span> Medical-agent lifecycle (9 steps · worked example)</h2>
+    <p class="sub">The reference implementation demonstrates the technical axis / Checks 2–4 end-to-end. Four steps emit machine-readable receipts; all four were observed in the S5.1 re-run.</p>
+    <div class="life">
+      <div class="step"><div class="num">01</div><div class="nm">register</div><div class="rc"></div></div>
+      <div class="step"><div class="num">02</div><div class="nm">evidence-denied</div><div class="rc">DENIED ✓</div></div>
+      <div class="step"><div class="num">03</div><div class="nm">gated-admit</div><div class="rc"></div></div>
+      <div class="step"><div class="num">04</div><div class="nm">change-gate</div><div class="rc"></div></div>
+      <div class="step"><div class="num">05</div><div class="nm">drift</div><div class="rc"></div></div>
+      <div class="step"><div class="num">06</div><div class="nm">pause</div><div class="rc">PAUSE ✓</div></div>
+      <div class="step"><div class="num">07</div><div class="nm">rollback</div><div class="rc">ROLLBACK ✓</div></div>
+      <div class="step"><div class="num">08</div><div class="nm">re-verify</div><div class="rc"></div></div>
+      <div class="step"><div class="num">09</div><div class="nm">resume</div><div class="rc">RESUMED ✓</div></div>
+    </div>
+  </section>
+
+  <!-- ④ -->
+  <section id="s5">
+    <h2><span class="n">4</span> S5.1 outsider-test result (zero-credential re-run)</h2>
+    <p class="sub">Reproducibility was demonstrated by re-running the reference implementation from a clean environment — <b>no credentials, no install, no network</b>. This is a contributor-run reproducibility demonstration, <b>not</b> a third-party attestation (per S6 external-AI note).</p>
+    <p><span class="verdict">VERDICT: PASS</span> &nbsp; exit code <b>0</b> &nbsp;·&nbsp; SHA-256 checked <b>7 / 7</b>, mismatches <b>0</b> &nbsp;·&nbsp; receipts <b>DENIED · PAUSE · ROLLBACK · RESUMED</b> all observed</p>
+    <table class="table">
+      <thead><tr><th>File</th><th>Bytes</th><th>SHA-256 (first 16 hex)</th><th>Match</th></tr></thead>
+      <tbody>
+        <tr><td>ATTESTATION.md</td><td>3556</td><td class="mono">0ae4c0c0b8fd6afe…</td><td>✓</td></tr>
+        <tr><td>failure_rules.json</td><td>1282</td><td class="mono">43f0b164c571147e…</td><td>✓</td></tr>
+        <tr><td>lgd_medai_demo.py</td><td>11964</td><td class="mono">c98149231c121c04…</td><td>✓</td></tr>
+        <tr><td>LICENSE</td><td>11356</td><td class="mono">31d805cc507abd0f…</td><td>✓</td></tr>
+        <tr><td>llms.txt</td><td>2059</td><td class="mono">9d322441a8d5b262…</td><td>✓</td></tr>
+        <tr><td>README.md</td><td>4264</td><td class="mono">d02e166e57272b72…</td><td>✓</td></tr>
+        <tr><td>VERIFICATION.md</td><td>2571</td><td class="mono">e62d399508aec2e2…</td><td>✓</td></tr>
+      </tbody>
+    </table>
+    <p class="sub" style="margin-top:10px">Full digests in <span class="mono">checks.json</span> and the repository <span class="mono">manifest.json</span>. Repo: <a href="https://github.com/zhaoxinghua09-cell/evidence-gated-medical-agent-demo" style="color:var(--s)">zhaoxinghua09-cell/evidence-gated-medical-agent-demo</a> (Apache-2.0, public).</p>
+  </section>
+
+  <!-- ⑤ -->
+  <section id="rt">
+    <h2><span class="n">5</span> Red-team top 3 (four-perspective, independently produced)</h2>
+    <p class="sub">The three most vulnerable points flagged by the S4 red team, and their current status after remediation.</p>
+    <div class="rt"><div class="tag ok">V1</div><div class="meta"><b>RESOLVED.</b> A1 §3 originally asserted "no answer on record from any participant" (a global-negative claim). Rewritten to accurate status: open question ① was addressed 2026-11-05 by <span class="mono">cgorlla</span> (three-part split); ③ discussed-not-consolidated; ④ named-but-not-defined.</div></div>
+    <div class="rt"><div class="tag ok">V2</div><div class="meta"><b>RESOLVED.</b> C Checks 3–4 appeared to exceed the literal 30-Oct "chain + record" promise. §0/§2 now anchor Checks 3–4 to the nine scope areas the 30-Oct message itself enumerated (capability / intent / conformance).</div></div>
+    <div class="rt"><div class="tag ok">V3</div><div class="meta"><b>RESOLVED.</b> A1 §11 CIR 179 link was the group landing page, not the contribution template/file. Replaced with the FG-TIDA GitHub org URL as the direct contribution channel.</div></div>
+    <div class="note">Open human item (not a red-team defect): A1 document header still carries the placeholder <span class="mono">[individual ITU account e-mail — to be filled by contributor]</span>. Must be filled before submission (T1).</div>
+  </section>
+
+  <!-- ⑥ -->
+  <section id="refs">
+    <h2><span class="n">6</span> References (direct, primary-source URLs)</h2>
+    <div class="refs">
+      <a href="https://github.com/FG-TIDA/themes/issues/59" target="_blank" rel="noopener">FG-TIDA/themes #59 — trust control plane proposal</a>
+      <a href="https://github.com/FG-TIDA/themes/issues/51" target="_blank" rel="noopener">FG-TIDA/themes #51 — terminology (Component A)</a>
+      <a href="https://github.com/FG-TIDA/themes/issues/42" target="_blank" rel="noopener">FG-TIDA/themes #42 — evidence-grading workstream</a>
+      <a href="https://github.com/FG-TIDA/use-cases/issues/53" target="_blank" rel="noopener">FG-TIDA/use-cases #53 — medical-agent lifecycle</a>
+      <a href="https://github.com/FG-TIDA" target="_blank" rel="noopener">FG-TIDA GitHub org (contribution channel / CIR 179)</a>
+      <a href="https://w3c-cg.github.io/s-agent-comm/" target="_blank" rel="noopener">W3C s-agent-comm Charter (nine scope areas)</a>
+      <a href="https://w3c-cg.github.io/s-agent-comm/notes/agentidl-note" target="_blank" rel="noopener">W3C AgentIDL Note</a>
+      <a href="https://lists.w3.org/Archives/Public/public-s-agent-comm/2026Oct/0001.html" target="_blank" rel="noopener">30-Oct commitment (Message-ID 0001)</a>
+      <a href="https://doi.org/10.6028/NIST.AI.100-1" target="_blank" rel="noopener">NIST AI RMF (AI 100-1)</a>
+      <a href="https://www.bmj.com/content/336/7650/924" target="_blank" rel="noopener">GRADE — Guyatt et al., BMJ 2008</a>
+      <a href="https://github.com/zhaoxinghua09-cell/evidence-gated-medical-agent-demo" target="_blank" rel="noopener">Reference demo repo (Apache-2.0, public)</a>
+    </div>
+  </section>
+
+  <footer>
+    Generated 2026-11-06 for internal sign-off before submission · S1–S8 + L0 machine gate · CC BY 4.0 · This page is the human-facing visual companion to checks.json (machine-readable dual form).
+  </footer>
+
+</div>
+</body>
+</html>
