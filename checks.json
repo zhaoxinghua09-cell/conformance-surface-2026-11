@@ -1,0 +1,127 @@
+{
+  "schema": "intl-contrib-checks/v1",
+  "generated_at_utc": "2026-11-06",
+  "source_documents": {
+    "A1": "CONTRIB_20261123_v1.md (ITU FG-TIDA Input Document, ToR A.2.7)",
+    "C": "CONTRIB_sagentcomm_20261215_v1.md (W3C s-agent-comm four-checks deliverable)"
+  },
+  "contributor": {
+    "name": "Xinghua Zhao",
+    "role": "individual contributor (no organisational affiliation stated)",
+    "orcid": "0009-0001-0512-1237",
+    "licence": "CC BY 4.0"
+  },
+  "evidence_grades": [
+    {"grade":"V","label":"Verified","meaning":"Cross-verified against independent sources","consequence":"Eligible for automated trust","color":"#1a7f37"},
+    {"grade":"S","label":"Single-source","meaning":"One source only, not yet cross-checked","consequence":"Eligible with human-in-loop","color":"#0969da"},
+    {"grade":"M","label":"Model-derived","meaning":"Inferred / model-produced, not externally attested","consequence":"Conditional, flagged","color":"#bf8700"},
+    {"grade":"L","label":"Low / unverified","meaning":"Missing or contradictory evidence","consequence":"Quarantined","color":"#bc4c00"},
+    {"grade":"P","label":"Prohibited / poisoned","meaning":"Known-bad or tamper-indicated","consequence":"Blocked","color":"#cf222e"}
+  ],
+  "authorization_states": ["verified","unresolved","rejected","quarantined"],
+  "checks": [
+    {
+      "id": "check-1",
+      "title": "Delegation-chain verifiability",
+      "in_document": "C (W3C s-agent-comm)",
+      "question": "Can a relying party retrieve and cryptographically verify the ordered delegation chain from a root authority down to this agent?",
+      "vocabulary": ["delegation (AgentIDL constrainable delegation)","identity (Agent Identity Registry)"],
+      "evidence_items": [
+        {"grade":"V","criterion":"Every link resolves to a verifiable delegator->delegate binding with a signed scope statement (delegator, delegate, capability, not-before, not-after)."},
+        {"grade":"S","criterion":"The chain resolves but one or more links rely on a single (un-cross-checked) source."},
+        {"grade":"M","criterion":"The chain is asserted by the agent itself with no independent delegator attestation."},
+        {"grade":"L","criterion":"One or more links missing, expired, or unverifiable."},
+        {"grade":"P","criterion":"A link is revoked yet still presented as active (tamper-indicated)."}
+      ],
+      "pass": "Every link is V or S and none is L or P.",
+      "fail": "Any link L or P."
+    },
+    {
+      "id": "check-2",
+      "title": "Execution-record integrity",
+      "in_document": "C (W3C s-agent-comm)",
+      "question": "Can a relying party confirm the agent's execution record (semantic log) is present, tamper-evident, and attributable to the agent's identity?",
+      "vocabulary": ["semantic logs"],
+      "evidence_items": [
+        {"grade":"V","criterion":"The log is hash-chained, each entry signed by the agent key, and entries are contiguous (no gaps)."},
+        {"grade":"S","criterion":"The log is complete but one segment is signed by an intermediate delegate rather than the agent key."},
+        {"grade":"M","criterion":"The log is reconstructed by a model/inference from side channels, not from signed records."},
+        {"grade":"L","criterion":"Log entries missing or unsigned."},
+        {"grade":"P","criterion":"A hash-chain break or a forged signature detected."}
+      ],
+      "pass": "V or S across the audited window, none L or P.",
+      "fail": "Any L or P."
+    },
+    {
+      "id": "check-3",
+      "title": "Authorization binding",
+      "in_document": "C (W3C s-agent-comm)",
+      "question": "Does an authorization gate evaluate the delegation chain (Check 1) plus the evidence grade and produce a reproducible admit/deny verdict whose inputs are enumerable?",
+      "vocabulary": ["capability description","conformance definitions"],
+      "evidence_items": [
+        {"grade":"V","criterion":"The gate's input fields (delegation state, evidence grade, requested action) are enumerated, and the verdict is a pure function of those inputs."},
+        {"grade":"S","criterion":"Inputs enumerated, verdict reproducible, but one input (e.g. revocation state) read from a single source."},
+        {"grade":"M","criterion":"Verdict produced by a model with no enumerable input contract."},
+        {"grade":"L","criterion":"Verdict inputs not documented; the gate is opaque."},
+        {"grade":"P","criterion":"The gate admits an action for which a P-graded input exists (contradiction)."}
+      ],
+      "pass": "V or S.",
+      "fail": "L or P."
+    },
+    {
+      "id": "check-4",
+      "title": "Accountability continuity (revocation / rollback)",
+      "in_document": "C (W3C s-agent-comm)",
+      "question": "When a delegation is revoked or a lifecycle rollback occurs, does the execution record show a coherent before/after with an auditable trail, and do no orphaned authorizations persist?",
+      "vocabulary": ["intent modelling","conformance definitions"],
+      "evidence_items": [
+        {"grade":"V","criterion":"Revocation/rollback state propagates to the execution record; the record shows the state transition with a timestamp and the revoking authority."},
+        {"grade":"S","criterion":"Transition recorded but the revoking authority attested by a single source."},
+        {"grade":"M","criterion":"Transition inferred, not recorded in the signed log."},
+        {"grade":"L","criterion":"No record of the transition; orphaned authorizations may persist."},
+        {"grade":"P","criterion":"An authorization remains effective after an explicit revocation (orphan detected)."}
+      ],
+      "pass": "V or S, none L or P.",
+      "fail": "Any L or P."
+    }
+  ],
+  "medical_agent_lifecycle": {
+    "steps": ["register","evidence-denied","gated-admit","change-gate","drift","pause","rollback","re-verify","resume"],
+    "receipts_observed": ["DENIED","PAUSE","ROLLBACK","RESUMED"]
+  },
+  "s5_outsider_test": {
+    "description": "Zero-credential, clean-environment re-run of the reference implementation (no install, no network). Contributor-run reproducibility demonstration, NOT a third-party attestation.",
+    "exit_code": 0,
+    "verdict": "PASS",
+    "receipts_found": {"DENIED":true,"PAUSE":true,"ROLLBACK":true,"RESUMED":true},
+    "sha_checked": 7,
+    "sha_mismatch": 0,
+    "manifest_files": [
+      {"path":"ATTESTATION.md","sha256":"0ae4c0c0b8fd6afe6ea547b151aba8f37032a3d5af2f0989d8c73889e67305c9"},
+      {"path":"failure_rules.json","sha256":"43f0b164c571147ec77ba49e1094e449850b38595bc00bbeac1baadf2f28b1d9"},
+      {"path":"lgd_medai_demo.py","sha256":"c98149231c121c040b98f268a8ba60ee7731cacbecfcff3bba176bb9be723443"},
+      {"path":"LICENSE","sha256":"31d805cc507abd0f22819fc7ba1b941d8b44f2980e4a98878daa527722bedd9d"},
+      {"path":"llms.txt","sha256":"9d322441a8d5b26286b9a56e188e8d5811b779072458c028cf5c3ee48673a992"},
+      {"path":"README.md","sha256":"d02e166e57272b72852873fb895342fb9c3359c8411c8743890b3cf8b5e3708b"},
+      {"path":"VERIFICATION.md","sha256":"e62d399508aec2e267d5293e7aa51fd27843837443a041407f77d924108904f5"}
+    ],
+    "repository": "https://github.com/zhaoxinghua09-cell/evidence-gated-medical-agent-demo"
+  },
+  "redteam_top3": [
+    {"id":"V1","finding":"A1 sec.3 global-negative assertion 'no answer on record from any participant'","status":"RESOLVED","fix":"Rewritten to accurate status: 1 addressed 2026-11-05 by cgorlla; 3 discussed-not-consolidated; 4 named-but-not-defined."},
+    {"id":"V2","finding":"C Check 3/4 exceed literal 30-Oct 'chain + record' promise","status":"RESOLVED","fix":"Sec.0/2 anchor Checks 3-4 to the nine scope areas the 30-Oct message itself enumerated (capability / intent / conformance)."},
+    {"id":"V3","finding":"A1 sec.11 CIR 179 link was the group landing page, not the template/file","status":"RESOLVED","fix":"Replaced with the FG-TIDA GitHub org URL as the direct contribution channel."}
+  ],
+  "references": [
+    {"label":"FG-TIDA/themes #59","url":"https://github.com/FG-TIDA/themes/issues/59"},
+    {"label":"FG-TIDA/themes #51","url":"https://github.com/FG-TIDA/themes/issues/51"},
+    {"label":"FG-TIDA/themes #42","url":"https://github.com/FG-TIDA/themes/issues/42"},
+    {"label":"FG-TIDA/use-cases #53","url":"https://github.com/FG-TIDA/use-cases/issues/53"},
+    {"label":"ITU TSB Circular 179 / FG-TIDA GitHub","url":"https://github.com/FG-TIDA"},
+    {"label":"W3C s-agent-comm Charter","url":"https://w3c-cg.github.io/s-agent-comm/"},
+    {"label":"W3C AgentIDL Note","url":"https://w3c-cg.github.io/s-agent-comm/notes/agentidl-note"},
+    {"label":"30-Oct commitment (0001)","url":"https://lists.w3.org/Archives/Public/public-s-agent-comm/2026Oct/0001.html"},
+    {"label":"NIST AI RMF (AI 100-1)","url":"https://doi.org/10.6028/NIST.AI.100-1"},
+    {"label":"Reference demo repo","url":"https://github.com/zhaoxinghua09-cell/evidence-gated-medical-agent-demo"}
+  ]
+}
