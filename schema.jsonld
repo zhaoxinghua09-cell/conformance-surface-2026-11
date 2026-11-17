@@ -1,0 +1,62 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "orcid": {
+      "@id": "https://schema.org/identifier",
+      "@type": "@id"
+    }
+  },
+  "@type": "CreativeWork",
+  "@id": "https://github.com/zhaoxinghua09-cell/conformance-surface-2026-11#metadata",
+  "name": "Conformance surface and outsider verification (working drafts)",
+  "description": "Working drafts of a conformance surface for ITU-T FG-TIDA contribution, with a standard-library verifier any recipient can run without credentials. Not adopted by any standards body. Not submitted. Cite a specific file at a specific commit, and state that it is a draft.",
+  "version": "draft",
+  "datePublished": "2026-11-17",
+  "dateModified": "2026-11-17",
+  "creativeWorkStatus": "Draft",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "author": {
+    "@type": "Person",
+    "name": "Xinghua Zhao",
+    "identifier": "https://orcid.org/0009-0001-0512-1237",
+    "affiliation": {
+      "@type": "Organization",
+      "name": "Independent researcher"
+    }
+  },
+  "isBasedOn": {
+    "@id": "https://doi.org/10.5281/zenodo.22456647"
+  },
+  "keywords": [
+    "ITU-T FG-TIDA",
+    "conformance",
+    "outsider verification",
+    "working draft"
+  ],
+  "hasPart": [
+    {
+      "@type": "CreativeWork",
+      "name": "README.md",
+      "description": "What the conformance surface claims, and the one command that checks it",
+      "encodingFormat": "text/markdown"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "checks.json",
+      "description": "The claims as machine-readable checks, with evidence grades and references",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "S8_visualization.html",
+      "description": "Self-contained visualisation, no runtime network dependency",
+      "encodingFormat": "text/html"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "verify_all.py",
+      "description": "Standard-library-only verifier; exits non-zero when any assertion fails",
+      "encodingFormat": "text/x-python"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "title": "Conformance surface and outsider verification (working drafts)",
+  "description": "<p>Working drafts of a conformance surface for ITU-T FG-TIDA contribution, with a standard-library verifier any recipient can run without credentials. Not adopted by any standards body. Not submitted. Cite a specific file at a specific commit, and state that it is a draft.</p>",
+  "upload_type": "publication",
+  "publication_type": "technicalnote",
+  "publication_date": "2026-11-17",
+  "version": "draft",
+  "creators": [
+    {
+      "name": "Zhao, Xinghua",
+      "orcid": "0009-0001-0512-1237",
+      "affiliation": "Independent researcher"
+    }
+  ],
+  "license": "cc-by-4.0",
+  "keywords": [
+    "ITU-T FG-TIDA",
+    "conformance",
+    "outsider verification",
+    "working draft"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.22456647",
+      "relation": "isReferencedBy",
+      "scheme": "doi"
+    }
+  ],
+  "notes": "Working drafts. Not adopted by any standards body. Not submitted as of 2026-11-17. Statements inside the drafts are subject to the primary source on the day of citation."
+}
