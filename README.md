@@ -47,7 +47,12 @@ cd conformance-surface-2026-11
 python3 verify_all.py
 ```
 
-Exit code 0 means every check passed; 1 means at least one did not, and the
+Exit code 0 means every check passed; 1 means at least one did not. **The number of
+assertions is derived from the repository's current contents, not fixed.** The language
+group, for example, scans every file in the root, so adding a file adds assertions. Quote
+the verdict ("one command, all assertions pass"), not a count: a count written into a
+document expires the moment the repository changes, and a reader who runs it then gets a
+different number from the one the document promised.
 failing rows say what was compared.
 
 What it checks, and why each one is there:
