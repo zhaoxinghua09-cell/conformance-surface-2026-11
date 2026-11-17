@@ -75,10 +75,17 @@ into copies of the material and the checker was run on each:
 | a digest overwritten with zeros | B, three rows |
 | an external `<script src>` added to the visual | C |
 | Chinese text appended to the README | E |
-| "We are stronger than every competitor" appended to the README | F |
+| an absolute superiority sentence appended to the README | F |
 | the silent-failure rule removed **and the digests updated to match** | D — `receipt: PAUSE: absent from output`, `log_entries == 20: got 19` |
 
-The last one is the one worth reading twice. Editing a file and updating its
+The last one is the one worth reading twice.
+
+One more thing happened while writing this README: the first version of the table above
+quoted the injected sentence in full, and group F then failed on this file — the checker
+caught its own documentation. The wording was changed rather than special-casing the README,
+because a checker that exempts itself from its own rules is not a checker. If a future edit
+reintroduces an absolute claim anywhere in this repository, including in this paragraph,
+verify_all.py is supposed to fail, and that is the intended behaviour. Editing a file and updating its
 digest is exactly how an honest correction looks, so a digest check alone cannot
 tell a fix from a tamper. That is why group D compares behaviour instead.
 
